@@ -6,6 +6,7 @@ const film = ref('')
 const prijs = ref(0);
 const teller = ref(1)
 const isReserveerd = ref(false) 
+const tekst = ref('');
 
 function omhoog() {
   if (teller.value <= 5)
@@ -20,6 +21,12 @@ function omlaag() {
 function reserveer() {
   prijs.value = teller.value * 12.50
   isReserveerd.value = true
+    if (teller.value == 1) {
+      tekst.value = naam.value + " reserveerd " + teller.value + " ticket voor " + film.value + " totaal: EUR " + prijs.value
+    }
+    if (teller.value >= 2) {
+      tekst.value = naam.value + " reserveerde " + teller.value + " tickets voor " + film.value + " totaal: EUR " + prijs.value
+    }
 }
 
 function reset() {
@@ -45,8 +52,8 @@ function reset() {
 
   <button @click="reserveer">reserveer</button>
   <button @click="reset">reset</button>
-  <h1 v-show="isReserveerd">{{ naam }} {{ film }} €{{ prijs }}</h1>
-  <h1 v-show="!isReserveerd">vul eerst je naam en film in</h1>
+  <h1 v-show="isReserveerd">{{tekst }}</h1>
+  <h1 v-show="!isReserveerd"></h1>
 </template>
 
 <style>
