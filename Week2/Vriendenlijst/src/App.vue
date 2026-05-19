@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const games = ref([
   { id: 1, naam: 'GTA V', genre: 'Action', prijs: 59.99, opVoorraad: true },
@@ -15,8 +15,19 @@ const nieuweNaam = ref('')
 const nieuweGenre = ref('')
 const nieuwePrijs = ref('')
 const nieuweVoorraad = ref(true)
+const geselecteerdGenre = ref('All')
 
 let volgendeId = 7
+
+const genres = computed(() => ['All', ...new Set(games.value.map((game) => game.genre))])
+
+const gefilterdeGames = computed(() => {
+  if (geselecteerdGenre.value === 'All') {
+    return games.value
+  }
+
+  return games.value.filter((game) => game.genre === geselecteerdGenre.value)
+})
 
 function voegToeAanWinkelwagen(game) {
   winkelwagen.value.push(game)
@@ -50,10 +61,26 @@ function voegGameToe() {
     <p>Winkelwagen: {{ winkelwagen.length }}</p>
     <p v-if="winkelwagen.length === 0">De winkelwagen is leeg.</p>
 
-    <p v-for="game in games" :key="game.id">
-      {{ game.naam }} - {{ game.genre }} - €{{ game.prijs.toFixed(2) }}
-      <button v-if="game.opVoorraad" type="button" @click="voegToeAanWinkelwagen(game)">bestel</button>
+    <p>
+      <select v-model="geselecteerdGenre">
+        <option v-for="genre in genres" :key="genre" :value="genre">
+          {{ genre }}
+        </option>
+      </select>
     </p>
+
+    <ol>
+      <li
+        v-for="game in gefilterdeGames"
+        :key="game.id"
+        :class="{ 'is-out-of-stock': !game.opVoorraad }"
+      >
+        {{ game.naam }} - {{ game.genre }} - €{{ game.prijs.toFixed(2) }}
+        <button v-if="game.opVoorraad" type="button" @click="voegToeAanWinkelwagen(game)">
+          bestel
+        </button>
+      </li>
+    </ol>
 
     <p>
       <input v-model="nieuweNaam" type="text" placeholder="naam">
@@ -75,3 +102,9 @@ function voegGameToe() {
     </p>
   </div>
 </template>
+
+<style>
+ .active {
+  color: red;
+ }
+</style>
