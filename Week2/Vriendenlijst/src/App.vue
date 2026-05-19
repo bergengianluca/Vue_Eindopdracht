@@ -73,7 +73,7 @@ function voegGameToe() {
       <li
         v-for="game in gefilterdeGames"
         :key="game.id"
-        :class="{ 'is-out-of-stock': !game.opVoorraad }"
+        :class="{ 'is-out-of-stock': !game.opVoorraad, 'in-stock': game.opVoorraad }"
       >
         {{ game.naam }} - {{ game.genre }} - €{{ game.prijs.toFixed(2) }}
         <button v-if="game.opVoorraad" type="button" @click="voegToeAanWinkelwagen(game)">
@@ -104,7 +104,20 @@ function voegGameToe() {
 </template>
 
 <style>
- .active {
-  color: red;
- }
+.in-stock {
+  background-color: #d4f7d4; /* light green */
+  color: #06470a;
+}
+
+.is-out-of-stock {
+  background-color: #f7d4d4; /* light red */
+  color: #7a0b0b;
+}
+
+/* keep small spacing */
+ol li {
+  padding: 6px 8px;
+  margin: 6px 0;
+  border-radius: 4px;
+}
 </style>
