@@ -1,0 +1,38 @@
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+</script>
+
+<template>
+  <div class="app">
+    <router-view />
+  </div>
+</template>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #f8f9fa;
+}
+
+.app {
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+</style>
+
