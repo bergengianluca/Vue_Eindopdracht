@@ -10,14 +10,16 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['toggle-favorite'])
+const emit = defineEmits(['toggle-favorite', 'select-pokemon'])
 
 function getPokemonId() {
+  // De API-url eindigt op bijvoorbeeld /25/. Dit haalt alleen het nummer 25 eruit.
   return props.pokemon.url.split('/').filter(Boolean).pop()
 }
 
 function getPokemonImage() {
   const id = getPokemonId()
+  // Met het gevonden id wordt de juiste afbeelding-URL gemaakt.
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
 }
 
@@ -27,7 +29,11 @@ function formatPokemonName(name) {
 </script>
 
 <template>
-  <li class="mdc-image-list__item pokemon-card" :title="formatPokemonName(pokemon.name)">
+  <li
+    class="mdc-image-list__item pokemon-card"
+    :title="formatPokemonName(pokemon.name)"
+    @click="emit('select-pokemon', pokemon)"
+  >
     <img
       class="mdc-image-list__image"
       :src="getPokemonImage()"
@@ -37,11 +43,12 @@ function formatPokemonName(name) {
       <span class="mdc-image-list__label">
         {{ formatPokemonName(pokemon.name) }}
       </span>
+      <!-- .stop zorgt dat de klik op het hartje niet ook de kaart opent. -->
       <button
         class="material-icons favorite-button"
         :class="{ favorite: isFavorite }"
         :aria-label="isFavorite ? 'Verwijder favoriet' : 'Maak favoriet'"
-        @click="emit('toggle-favorite', pokemon)"
+        @click.stop="emit('toggle-favorite', pokemon)"
       >
         {{ isFavorite ? 'favorite' : 'favorite_border' }}
       </button>
@@ -61,6 +68,7 @@ function formatPokemonName(name) {
   background-color: #f5f5f5;
   border-radius: 8px;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .mdc-image-list__image {

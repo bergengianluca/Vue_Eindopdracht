@@ -6,22 +6,13 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  currentView: {
-    type: String,
-    required: true,
-  },
 })
 
-const emit = defineEmits(['toggle-search', 'change-view'])
+const emit = defineEmits(['toggle-search'])
 const showMenu = ref(false)
 
 function toggleMenu() {
   showMenu.value = !showMenu.value
-}
-
-function changeView(newView) {
-  emit('change-view', newView)
-  showMenu.value = false
 }
 </script>
 
@@ -57,20 +48,20 @@ function changeView(newView) {
     </div>
 
     <nav v-if="showMenu" class="menu">
-      <button
+      <RouterLink
+        to="/"
         class="menu-button"
-        :class="{ active: currentView === 'all' }"
-        @click="changeView('all')"
+        @click="showMenu = false"
       >
         Alle pokemon
-      </button>
-      <button
+      </RouterLink>
+      <RouterLink
+        to="/favorieten"
         class="menu-button"
-        :class="{ active: currentView === 'favorites' }"
-        @click="changeView('favorites')"
+        @click="showMenu = false"
       >
         Favorieten
-      </button>
+      </RouterLink>
     </nav>
   </header>
 </template>
@@ -119,11 +110,13 @@ function changeView(newView) {
   color: #212121;
   font-size: 16px;
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .menu-button:hover,
-.active {
+.router-link-exact-active {
   background-color: #f1e8ff;
 }
 </style>

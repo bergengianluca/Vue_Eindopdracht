@@ -16,9 +16,10 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['toggle-favorite'])
+const emit = defineEmits(['toggle-favorite', 'select-pokemon'])
 
 function isFavorite(pokemon) {
+  // some geeft true terug zodra dezelfde Pokemon in de favorieten staat.
   return props.favoritePokemons.some((favoritePokemon) => {
     return favoritePokemon.name === pokemon.name
   })
@@ -36,6 +37,7 @@ function isFavorite(pokemon) {
         :pokemon="pokemon"
         :is-favorite="isFavorite(pokemon)"
         @toggle-favorite="emit('toggle-favorite', pokemon)"
+        @select-pokemon="emit('select-pokemon', pokemon)"
       />
     </ul>
   </div>
