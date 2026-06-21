@@ -1,3 +1,14 @@
+<script setup>
+defineProps({
+  showSearch: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emit = defineEmits(['toggle-search'])
+</script>
+
 <template>
   <header class="mdc-top-app-bar">
     <div class="mdc-top-app-bar__row">
@@ -13,7 +24,9 @@
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
         <button
           class="material-icons mdc-top-app-bar__action-item mdc-icon-button"
+          :class="{ 'search-active': showSearch }"
           aria-label="Search"
+          @click="emit('toggle-search')"
         >
           search
         </button>
@@ -48,5 +61,9 @@
 
 .mdc-icon-button {
   color: #ffffff;
+}
+
+.search-active {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 </style>

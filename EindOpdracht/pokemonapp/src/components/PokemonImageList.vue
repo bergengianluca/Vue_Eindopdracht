@@ -11,7 +11,9 @@ defineProps({
 
 <template>
   <div class="masonry-image-list">
-    <ul class="mdc-image-list mdc-image-list--masonry">
+    <p v-if="pokemons.length === 0">Geen pokemon gevonden.</p>
+
+    <ul v-else class="mdc-image-list mdc-image-list--masonry">
       <PokemonCard
         v-for="pokemon in pokemons"
         :key="pokemon.name"
@@ -24,6 +26,10 @@ defineProps({
 <style scoped>
 .masonry-image-list {
   padding: 24px;
+}
+
+p {
+  margin: 0;
 }
 
 .mdc-image-list {
