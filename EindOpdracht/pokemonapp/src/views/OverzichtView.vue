@@ -2,52 +2,74 @@
 import { computed, ref, onMounted } from 'vue'
 import AppTopBar from '@/components/AppTopBar.vue'
 import PokemonImageList from '@/components/PokemonImageList.vue'
-import PokemonPagination from '@/components/PokemonPagination.vue'
 import PokemonSearch from '@/components/PokemonSearch.vue'
 import PokemonStatus from '@/components/PokemonStatus.vue'
 
 const pokemons = ref([])
+const favoritePokemons = ref([])
 const loading = ref(false)
 const error = ref('')
 const searchText = ref('')
 const showSearch = ref(false)
-const currentPage = ref(1)
-const pokemonsPerPage = 20
+const currentView = ref('all')
 
-const url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0'
+const url = 'https://pokeapi.co/api/v2/pokemon'
+
+const visiblePokemons = computed(() => {
+  if (currentView.value === 'favorites') {
+    return favoritePokemons.value
+  }
+
+  return pokemons.value
+})
 
 const filteredPokemons = computed(() => {
-  return pokemons.value.filter((pokemon) => {
+  return visiblePokemons.value.filter((pokemon) => {
     return pokemon.name.toLowerCase().includes(searchText.value.toLowerCase())
   })
 })
 
-const totalPages = computed(() => {
-  return Math.ceil(filteredPokemons.value.length / pokemonsPerPage)
+const title = computed(() => {
+  if (currentView.value === 'favorites') {
+    return 'Favoriete pokemon'
+  }
+
+  return 'Pokemon overzicht'
 })
 
-const paginatedPokemons = computed(() => {
-  const start = (currentPage.value - 1) * pokemonsPerPage
-  const end = start + pokemonsPerPage
+const emptyText = computed(() => {
+  if (currentView.value === 'favorites') {
+    return 'Je hebt nog geen favoriete pokemon.'
+  }
 
-  return filteredPokemons.value.slice(start, end)
+  return 'Geen pokemon gevonden.'
 })
 
 function changeSearchText(newSearchText) {
   searchText.value = newSearchText
-  currentPage.value = 1
+}
+
+function changeView(newView) {
+  currentView.value = newView
+  searchText.value = ''
 }
 
 function toggleSearch() {
   showSearch.value = !showSearch.value
 }
 
-function previousPage() {
-  currentPage.value--
-}
+function toggleFavorite(pokemon) {
+  const favorite = favoritePokemons.value.find((favoritePokemon) => {
+    return favoritePokemon.name === pokemon.name
+  })
 
-function nextPage() {
-  currentPage.value++
+  if (favorite) {
+    favoritePokemons.value = favoritePokemons.value.filter((favoritePokemon) => {
+      return favoritePokemon.name !== pokemon.name
+    })
+  } else {
+    favoritePokemons.value.push(pokemon)
+  }
 }
 
 async function fetchPokemons() {
@@ -61,13 +83,14 @@ async function fetchPokemons() {
     }
 
     const data = await response.json()
-    const allPokemonResponse = await fetch(`${url}?limit=${data.count}`)
+    const allPokemonResponse = await fetch(`${url}?limit=${data.count}&offset=0`)
 
     if (!allPokemonResponse.ok) {
       throw new Error('Network response was not ok')
     }
 
     const allPokemonData = await allPokemonResponse.json()
+
     pokemons.value = allPokemonData.results
   } catch (err) {
     error.value = err.message
@@ -82,9 +105,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <AppTopBar :show-search="showSearch" @toggle-search="toggleSearch" />
+  <AppTopBar
+    :show-search="showSearch"
+    :current-view="currentView"
+    @toggle-search="toggleSearch"
+    @change-view="changeView"
+  />
 
-  <h1>Pokemon overzicht</h1>
+  <h1>{{ title }}</h1>
 
   <PokemonStatus :loading="loading" :error="error" />
   <PokemonSearch
@@ -92,13 +120,12 @@ onMounted(() => {
     :search-text="searchText"
     @search="changeSearchText"
   />
-  <PokemonImageList v-if="!loading && !error" :pokemons="paginatedPokemons" />
-  <PokemonPagination
+  <PokemonImageList
     v-if="!loading && !error"
-    :current-page="currentPage"
-    :total-pages="totalPages"
-    @previous-page="previousPage"
-    @next-page="nextPage"
+    :pokemons="filteredPokemons"
+    :favorite-pokemons="favoritePokemons"
+    :empty-text="emptyText"
+    @toggle-favorite="toggleFavorite"
   />
 </template>
 

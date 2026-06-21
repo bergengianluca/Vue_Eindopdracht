@@ -4,7 +4,13 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+const emit = defineEmits(['toggle-favorite'])
 
 function getPokemonId() {
   return props.pokemon.url.split('/').filter(Boolean).pop()
@@ -31,6 +37,14 @@ function formatPokemonName(name) {
       <span class="mdc-image-list__label">
         {{ formatPokemonName(pokemon.name) }}
       </span>
+      <button
+        class="material-icons favorite-button"
+        :class="{ favorite: isFavorite }"
+        :aria-label="isFavorite ? 'Verwijder favoriet' : 'Maak favoriet'"
+        @click="emit('toggle-favorite', pokemon)"
+      >
+        {{ isFavorite ? 'favorite' : 'favorite_border' }}
+      </button>
     </div>
   </li>
 </template>
@@ -63,6 +77,8 @@ function formatPokemonName(name) {
   min-height: 48px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   padding: 0 12px;
   box-sizing: border-box;
 }
@@ -72,5 +88,17 @@ function formatPokemonName(name) {
   font-size: 16px;
   line-height: 1.2;
   text-transform: capitalize;
+}
+
+.favorite-button {
+  border: 0;
+  background-color: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.favorite {
+  color: #ffca28;
 }
 </style>

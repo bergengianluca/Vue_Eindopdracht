@@ -1,23 +1,41 @@
 <script setup>
 import PokemonCard from './PokemonCard.vue'
 
-defineProps({
+const props = defineProps({
   pokemons: {
     type: Array,
     required: true,
   },
+  favoritePokemons: {
+    type: Array,
+    default: () => [],
+  },
+  emptyText: {
+    type: String,
+    default: 'Geen pokemon gevonden.',
+  },
 })
+
+const emit = defineEmits(['toggle-favorite'])
+
+function isFavorite(pokemon) {
+  return props.favoritePokemons.some((favoritePokemon) => {
+    return favoritePokemon.name === pokemon.name
+  })
+}
 </script>
 
 <template>
   <div class="masonry-image-list">
-    <p v-if="pokemons.length === 0">Geen pokemon gevonden.</p>
+    <p v-if="pokemons.length === 0">{{ emptyText }}</p>
 
     <ul v-else class="mdc-image-list mdc-image-list--masonry">
       <PokemonCard
         v-for="pokemon in pokemons"
         :key="pokemon.name"
         :pokemon="pokemon"
+        :is-favorite="isFavorite(pokemon)"
+        @toggle-favorite="emit('toggle-favorite', pokemon)"
       />
     </ul>
   </div>
