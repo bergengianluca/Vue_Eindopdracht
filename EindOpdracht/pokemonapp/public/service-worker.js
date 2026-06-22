@@ -1,10 +1,10 @@
-const cacheName = 'pokemon-app-v1'
+const cacheName = 'pokemon-app-v2'
 
 const appFiles = [
-  '/',
-  '/manifest.webmanifest',
-  '/assets/img/icons/icon-192x192.png',
-  '/assets/img/icons/icon-512x512.png',
+  '/pokemonapp/',
+  '/pokemonapp/manifest.webmanifest',
+  '/pokemonapp/assets/img/icons/icon-192x192.png',
+  '/pokemonapp/assets/img/icons/icon-512x512.png',
 ]
 
 // Bij de installatie worden de belangrijkste bestanden bewaard in de cache.
@@ -29,7 +29,5 @@ self.addEventListener('fetch', (event) => {
 
   if (event.request.method !== 'GET' || requestUrl.origin !== location.origin) return
 
-  event.respondWith(
-    fetch(event.request).catch(() => caches.match(event.request)),
-  )
+  event.respondWith(fetch(event.request).catch(() => caches.match(event.request)))
 })
