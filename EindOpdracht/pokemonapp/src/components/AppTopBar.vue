@@ -27,7 +27,7 @@ function toggleMenu() {
         >
           menu
         </button>
-        <span class="mdc-top-app-bar__title" id="homebtn">Home</span>
+        <span class="mdc-top-app-bar__title">Pokemon App</span>
       </section>
       <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
         <button
