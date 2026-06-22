@@ -10,16 +10,19 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  // als geen pokemons gevonden worden is dit de property die de tekst bevat die getoond moet worden.
   emptyText: {
     type: String,
     default: 'Geen pokemon gevonden.',
   },
 })
 
+// event voor het toggelen van favorieten en het selecteren van een pokemon voor de detailsheet
 const emit = defineEmits(['toggle-favorite', 'select-pokemon'])
 
 function isFavorite(pokemon) {
   // some geeft true terug zodra dezelfde Pokemon in de favorieten staat.
+  // some controleert minstens 1 element in de array en geeft true terug als dat element voldoet aan de voorwaarde in de callback-functie.
   return props.favoritePokemons.some((favoritePokemon) => {
     return favoritePokemon.name === pokemon.name
   })

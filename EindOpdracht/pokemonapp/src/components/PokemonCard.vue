@@ -1,19 +1,24 @@
 <script setup>
 const props = defineProps({
+  // definieert een componentprop die een pokemon-object bevat dat moet worden weergegeven
   pokemon: {
     type: Object,
     required: true,
   },
+  // definieert een componentprop die aangeeft of de pokemon een favoriet is
   isFavorite: {
     type: Boolean,
     default: false,
   },
 })
 
+// definieert events die worden uitgezonden wanneer de gebruiker een pokemon selecteert of een pokemon aan favorieten toevoegt/verwijdert
 const emit = defineEmits(['toggle-favorite', 'select-pokemon'])
 
 function getPokemonId() {
   // De API-url eindigt op bijvoorbeeld /25/. Dit haalt alleen het nummer 25 eruit.
+  // filter is voor het verwijderen van lege strings die ontstaan door de schuine strepen
+  // pop pakt het laatste element van de array, wat het id is.
   return props.pokemon.url.split('/').filter(Boolean).pop()
 }
 
@@ -24,6 +29,7 @@ function getPokemonImage() {
 }
 
 function formatPokemonName(name) {
+  // dit format alle namen van elke pokemon naar de eerste een hoofdletter en de rest kleine letters, zodat het er netjes uitziet.
   return name.charAt(0).toUpperCase() + name.slice(1)
 }
 </script>

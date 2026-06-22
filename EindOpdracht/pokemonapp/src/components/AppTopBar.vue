@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
+// definieert een componentprop die aangeeft of de zoekknop actief is
 defineProps({
   showSearch: {
     type: Boolean,
@@ -8,9 +9,13 @@ defineProps({
   },
 })
 
+// definieert een event dat wordt uitgezonden wanneer de zoekknop wordt ingedrukt
 const emit = defineEmits(['toggle-search'])
+
+// ref om te kijken of hamburgermenu open of dicht is
 const showMenu = ref(false)
 
+// functie om het hamburgermenu te openen en sluiten
 function toggleMenu() {
   showMenu.value = !showMenu.value
 }

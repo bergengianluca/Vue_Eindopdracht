@@ -4,19 +4,23 @@ defineProps({
     type: Object,
     default: null,
   },
+  // kijkt of er een pokemon-object is, zo niet dan is er waarschijnlijk een fout of is er nog aan het laden.
   loading: {
     type: Boolean,
     default: false,
   },
+  // dit veld kan een foutmelding bevatten als er iets misgaat bij het laden van de pokemon-details.
   error: {
     type: String,
     default: '',
   },
 })
 
+// event voor het sluiten van de detail sheet
 const emit = defineEmits(['close'])
 
 function formatName(name) {
+  // dit format alle namen van elke pokemon naar de eerste een hoofdletter en de rest kleine letters, zodat het er netjes uitziet.
   return name.charAt(0).toUpperCase() + name.slice(1)
 }
 </script>

@@ -1,15 +1,18 @@
 <script setup>
 defineProps({
+  // dit houd de huidige pagina bij die getoond wordt
   currentPage: {
     type: Number,
     required: true,
   },
+  // dit houd het totale aantal pagina's bij
   totalPages: {
     type: Number,
     required: true,
   },
 })
 
+// event voor het navigeren naar de vorige en volgende pagina
 const emit = defineEmits(['previous-page', 'next-page'])
 </script>
 

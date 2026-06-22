@@ -1,14 +1,18 @@
 <script setup>
 defineProps({
+  // prop voor de zoekbalk, deze houd de huidige zoektekst bij die in de zoekbalk staat.
   searchText: {
     type: String,
     required: true,
   },
 })
 
+// event voor het updaten van de zoektekst in de zoekbalk
 const emit = defineEmits(['search'])
 
 function updateSearch(event) {
+  // deze functie word aangeroepen wanneer de gebruiker iets typt in de zoekbalk, en zendt het 'search' event uit met de nieuwe zoektekst als payload.
+  // het wordt ook bij elke input-update aangeroepen, zodat het elke keer geupdate wordt
   emit('search', event.target.value)
 }
 </script>

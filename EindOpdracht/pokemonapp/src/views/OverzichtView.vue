@@ -11,9 +11,13 @@ const pokemons = ref([])
 const favoritePokemons = ref([])
 const loading = ref(false)
 const error = ref('')
+// deze ref houd de zoekbalk tekst bij
 const searchText = ref('')
+// dit houd bij of de zoekbalk getoond wordt of niet
 const showSearch = ref(false)
+// huidige pagina
 const currentPage = ref(1)
+// aantal pokemons per pagina
 const pokemonsPerPage = 20
 
 const showDetailSheet = ref(false)
