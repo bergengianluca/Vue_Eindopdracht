@@ -13,6 +13,7 @@ const selectedPokemon = ref(null)
 const detailLoading = ref(false)
 const detailError = ref('')
 
+// hier filter je de favorieten op basis van de zoektekst. Als de zoektekst leeg is, worden alle favorieten getoond.
 const filteredPokemons = computed(() => {
   return favoritePokemons.value.filter((pokemon) => {
     return pokemon.name.toLowerCase().includes(searchText.value.toLowerCase())
@@ -24,6 +25,7 @@ function toggleSearch() {
 }
 
 function toggleFavorite(pokemon) {
+  // item haalt de huidige pokemon op uit de favorietenlijst. Als deze er is, wordt hij verwijderd. Als hij er niet is, wordt hij toegevoegd.
   favoritePokemons.value = favoritePokemons.value.filter((item) => item.name !== pokemon.name)
   // localStorage kan alleen tekst bewaren, daarom wordt de array omgezet naar JSON-tekst.
   localStorage.setItem('favoritePokemons', JSON.stringify(favoritePokemons.value))
