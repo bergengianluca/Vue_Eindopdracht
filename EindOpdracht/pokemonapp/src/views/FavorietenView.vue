@@ -50,6 +50,7 @@ async function selectPokemon(pokemon) {
   }
 }
 
+// onmounted is een component die staat echt in beeld, dan wordt de code uitgevoerd. In dit geval wordt de favorietenlijst opgehaald uit localStorage.
 onMounted(() => {
   // JSON.parse zet de opgeslagen tekst weer terug naar een array.
   favoritePokemons.value = JSON.parse(localStorage.getItem('favoritePokemons')) || []
